@@ -1,10 +1,4 @@
 import os
-
-# List all files in the directory
-directory_path = r'C:\Users\user\Desktop\archive'
-files = os.listdir(directory_path)
-print(files)
-
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score
@@ -16,6 +10,12 @@ from sklearn.linear_model import LassoCV
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, roc_auc_score, roc_curve
 import matplotlib.pyplot as plt
 import seaborn as sns
+
+# List all files in the directory
+directory_path = r'C:\Users\user\Desktop\archive'
+files = os.listdir(directory_path)
+print(files)
+
 # Step 1: Data Loading and Preprocessing
 # Load the dataset
 data = pd.read_csv(r'C:\Users\user\Desktop\archive\data.csv')
@@ -57,6 +57,13 @@ print("Random Forest:")
 rf_accuracy = evaluate_model(rf, X_test, y_test)
 
 # Random Forest Accuracy Plot
+plt.figure(figsize=(6, 6))
+plt.bar(['Random Forest'], [rf_accuracy], color='green')
+plt.text(0, rf_accuracy + 0.01, f'{rf_accuracy:.4f}', ha='center', va='bottom', fontsize=14, color='black')
+plt.ylim(0, 1)
+plt.ylabel('Accuracy', fontsize=12)
+plt.title('Random Forest Accuracy', fontsize=14)
+plt.show()
 
 # Plotting Random Forest accuracy as a bar with value on top
 plt.figure(figsize=(6, 6))
@@ -81,6 +88,13 @@ print("Neural Network:")
 nn_accuracy = evaluate_model(nn, X_test, y_test)
 
 # Neural Network Accuracy Bar Plot
+plt.figure(figsize=(6, 6))
+sns.barplot(x=['Neural Network'], y=[nn_accuracy], color='blue')
+plt.text(0, nn_accuracy + 0.01, f'{nn_accuracy:.4f}', ha='center', va='bottom', fontsize=14, color='black')
+plt.ylim(0, 1)
+plt.ylabel('Accuracy', fontsize=12)
+plt.title('Neural Network Accuracy', fontsize=14)
+plt.show()
 
 # Plotting the accuracy of the Neural Network model
 plt.figure(figsize=(6, 6))
