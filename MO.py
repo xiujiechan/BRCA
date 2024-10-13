@@ -121,9 +121,9 @@ from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 
 scaler = StandardScaler()
-standardized_data = scaler.fit_transform()
-print(standardized_data)
-
+standardized_data = scaler.fit_transform(df.drop(columns=outcomes.columns))
+# Check if standardized_data is correctly standardized
+print(standardized_data[:5])
 
 # Apply PCA to reduce dimensionality
 n_components = 2
@@ -138,7 +138,10 @@ cluster_assignments = kmeans.fit_predict(standardized_data)
 # Generate set of colors for clusters
 colors = []
 for ii in range(n_clusters):
-    colors.append("#{:06x}".format(np.random.randint(0, 0xFFFFFF)))
+    colors = [f"#{np.random.randint(0, 0xFFFFFF):06x}" for _ in range(n_clusters)]
+
+    #colors.append("#{:06x}".format(np.random.randint(0, 0xFFFFFF)))
+
 
 # Plot the reduced data with cluster colors
 plt.figure(figsize=(10, 10))
