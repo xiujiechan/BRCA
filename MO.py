@@ -1,16 +1,15 @@
 import numpy as np
 import pandas as pd
 import os
-for dirname, _, filenames in os.walk('/kaggle/input'):
-    for filename in filenames:
-        print(os.path.join(dirname, filename))
-
 from sklearn.linear_model import LinearRegression
 from scipy.stats import ttest_ind
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
 
+for dirname, _, filenames in os.walk('/kaggle/input'):
+    for filename in filenames:
+        print(os.path.join(dirname, filename))
 
 #Section 1:Data Exploration
 # Open the dataset
@@ -23,13 +22,13 @@ print("Presenting the DataFrame:")
 print("")
 print("Variables: Four types of omics.")
 print("Number of RNAseq variables:",
-      len([match for match in df.columns if match.startswith("rs")]))
+        len([match for match in df.columns if match.startswith("rs")]))
 print("Number of Copy Number variables:",
-      len([match for match in df.columns if match.startswith("cn")]))
+        len([match for match in df.columns if match.startswith("cn")]))
 print("Number of Mutation variables:",
-      len([match for match in df.columns if match.startswith("mu")]))
+        len([match for match in df.columns if match.startswith("mu")]))
 print("Number of Protein variables:",
-      len([match for match in df.columns if match.startswith("pp")]))
+        len([match for match in df.columns if match.startswith("pp")]))
 
 print("")
 print("Outcomes: Five Outcomes.")
@@ -52,7 +51,7 @@ for col in df_myh11.columns:
     print("Mean in Dead:",df.loc[df["vital.status"]==0,col].mean())
     print("Mean in Alive:",df.loc[df["vital.status"]==1,col].mean())
     t_stat, p_val = ttest_ind(df.loc[df["vital.status"]==0,col],
-                              df.loc[df["vital.status"]==1,col])
+                                df.loc[df["vital.status"]==1,col])
 
     # print the results
     print('T-statistic: ', t_stat)
@@ -246,7 +245,7 @@ for ii in range(n_clusters):
 plt.bar(labels, cluster_survival,color=colors)
 # plot mean
 plt.plot([-1,4],[np.mean(cancer=="infiltrating lobular carcinoma"),
-                 np.mean(cancer=="infiltrating lobular carcinoma")],'--',color='gray')
+                    np.mean(cancer=="infiltrating lobular carcinoma")],'--',color='gray')
 
 # add a title to the plot
 plt.title('Proportion of infiltrating lobular carcinoma in each cluster')
