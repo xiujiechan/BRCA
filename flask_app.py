@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
+from sklearn.preprocessing import StandardScaler
 import feyn
 import pandas as pd
 import requests
 import json
+import pickle
 
 app = Flask(__name__)
 
@@ -10,6 +12,13 @@ app = Flask(__name__)
 model_path = r"C:\Users\user\Desktop\archive\model1_200its_mc7.model"
 multi_model = feyn.Model.load(model_path)
 print("Model Loaded:", multi_model)
+
+# Save model
+with open('rf_model.pkl', 'rb') as f:
+    rf_model = pickle.load(f)
+
+# Standard
+scaler = StandardScaler()
 
 @app.route('/predict', methods=['POST'])
 def predict():

@@ -7,7 +7,7 @@ from joblib import dump
 
 #step 1 Load data
 data_path = 'data.csv'
-df = pd.read_csv(r"C:\Users\user\Desktop\archive\data.csv")
+df = pd.read_csv(r"C:\Users\user\Desktop\BRCA\data.csv")
 
 #step 2 Divide the data into features and target variable
 X = df.drop("vital.status",axis=1)
