@@ -10,15 +10,16 @@ from sklearn.linear_model import LassoCV
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, roc_auc_score, roc_curve
 import matplotlib.pyplot as plt
 import seaborn as sns
+import pickle
 
 # List all files in the directory
-directory_path = r'C:\Users\user\Desktop\archive'
+directory_path = r'C:\Users\user\Desktop\BRCA'
 files = os.listdir(directory_path)
 print(files)
 
 # Step 1: Data Loading and Preprocessing
 # Load the dataset
-data = pd.read_csv(r'C:\Users\user\Desktop\archive\data.csv')
+data = pd.read_csv(r'C:\Users\user\Desktop\BRCA\data.csv')
 # Handle missing values (drop rows with missing values)
 data = data.dropna()
 
@@ -34,7 +35,7 @@ X_scaled = scaler.fit_transform(X)
 X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
 
 # Function to evaluate model performance
-def evaluate_model(model, X_test, y_test):
+def evaluate_model(model, X_test, y_test, plot_filename):
     y_pred = model.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
     print(f'Accuracy: {accuracy}')
@@ -45,6 +46,7 @@ def evaluate_model(model, X_test, y_test):
     sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
     plt.xlabel('Predicted')
     plt.ylabel('Actual')
+    plt.savefig(plot_filename) # Save .png
     plt.show()
     return accuracy
 
@@ -54,7 +56,7 @@ def evaluate_model(model, X_test, y_test):
 rf = RandomForestClassifier(n_estimators=100, random_state=42)
 rf.fit(X_train, y_train)
 print("Random Forest:")
-rf_accuracy = evaluate_model(rf, X_test, y_test)
+rf_accuracy = evaluate_model(rf, X_test, y_test, r'C:\Users\user\Desktop\BRCA\rf_confusion_matrix.png')
 
 # Random Forest Accuracy Plot
 plt.figure(figsize=(6, 6))
@@ -81,11 +83,16 @@ plt.ylabel('Accuracy', fontsize=12)
 plt.title('Random Forest Accuracy', fontsize=14)
 plt.show()
 
+# Save Random Forest model
+with open(r'C:\Users\user\Desktop\BRCA\rf_model.pkl', 'wb') as f: 
+    pickle.dump(rf, f) 
+    print("Random Forest Model Saved")
+
 # Neural Network
 nn = MLPClassifier(hidden_layer_sizes=(100,), max_iter=500, random_state=42)
 nn.fit(X_train, y_train)
 print("Neural Network:")
-nn_accuracy = evaluate_model(nn, X_test, y_test)
+nn_accuracy = evaluate_model(nn, X_test, y_test, r'C:\Users\user\Desktop\BRCA\nn_confusion_matrix.png')
 
 # Neural Network Accuracy Bar Plot
 plt.figure(figsize=(6, 6))
@@ -111,11 +118,16 @@ plt.title('Neural Network Accuracy', fontsize=14)
 # Display the plot
 plt.show()
 
+# Save Neural Network model
+with open(r'C:\Users\user\Desktop\BRCA\nn_model.pkl', 'wb') as f:
+    pickle.dump(nn, f) 
+    print("Neural Network Model Saved")
+
 # Support Vector Machine (SVM)
 svm = SVC(kernel='linear', probability=True)
 svm.fit(X_train, y_train)
 print("Support Vector Machine (SVM):")
-svm_accuracy = evaluate_model(svm, X_test, y_test)
+svm_accuracy = evaluate_model(svm, X_test, y_test, r'C:\Users\user\Desktop\BRCA\svm_confusion_matrix.png')
 
 
 # SVM Accuracy Bar Plot
@@ -132,11 +144,17 @@ plt.ylabel('Accuracy')
 plt.xlabel('Model')
 plt.show()
 
+#Save SVM model
+with open(r'C:\Users\user\Desktop\BRCA\svm_model.pkl', 'wb') as f: 
+    pickle.dump(svm, f) 
+    print("SVM Model Saved")
+
+
 # Gradient Boosting
 gb = GradientBoostingClassifier(n_estimators=100, random_state=42)
 gb.fit(X_train, y_train)
 print("Gradient Boosting:")
-gb_accuracy = evaluate_model(gb, X_test, y_test)
+gb_accuracy = evaluate_model(gb, X_test, y_test, r'C:\Users\user\Desktop\BRCA\gb_confusion_matrix.png') 
 
 
 # Plotting the Gradient Boosting accuracy
@@ -151,6 +169,11 @@ plt.title('Gradient Boosting Model Accuracy', fontsize=16)
 plt.ylabel('Accuracy', fontsize=14)
 plt.xlabel('Model', fontsize=14)
 plt.show()
+
+#Save Gradient Boosting model
+with open(r'C:\Users\user\Desktop\BRCA\gb_model.pkl', 'wb') as f: 
+    pickle.dump(gb, f) 
+    print("Gradient Boosting Model Saved")
 
 # Step 3: Results and Visualization
 # Plotting the results
@@ -168,9 +191,8 @@ for index, value in enumerate(accuracies):
 plt.title('Model Accuracy Comparison')
 plt.ylabel('Accuracy')
 plt.xlabel('Model')
+plt.savefig(r'C:\Users\user\Desktop\BRCA\model_accuracy_comparison.png') # Save.png
 plt.show()
-
-
 
 # Identifying the Best Performing Model
 best_model_index = np.argmax(accuracies)
