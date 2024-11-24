@@ -1,8 +1,22 @@
 BRCA.py  
+    包括隨機森林、神經網絡、SVM 和梯度提升，並對這些模型進行訓練和比較。
+    Random Forest:
+    Accuracy: 0.900709219858156
 
+    Neural Network:
+    Accuracy: 0.8936170212765957
 
+    Support Vector Machine (SVM):
+    Accuracy: 0.8439716312056738
 
+    Gradient Boosting:
+    Accuracy: 0.8936170212765957
 
+random_forest_model_training.py
+    專注於隨機森林模型的訓練和評估，包括 ROC 曲線和 AUC 的計算，以及 K 折交叉驗證。
+    ·更詳細的特徵重要性分析。
+    ·使用 K 折交叉驗證來驗證模型穩定性。
+    ·繪製 ROC 曲線來評估模型的分類性能。Accuracy:0.8809(+/-0.0563)
 
 詳細說明：
 
@@ -15,6 +29,11 @@ BRCA.py
     (2)模型訓練與評估：
         ·訓練了四種不同的模型：隨機森林、神經網絡、支持向量機（SVM）和梯度提升模型。
         ·使用函數 evaluate_model 來評估每個模型的性能，並打印準確率、分類報告和混淆矩陣。
+    (3)數據結果視覺化：
+        ·繪製了各模型的準確率條形圖。
+        ·繪製了模型的 ROC 曲線，以評估它們的分類性能。
+
+
 
 2.單基因研究：
 

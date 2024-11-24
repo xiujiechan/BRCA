@@ -37,17 +37,18 @@ plt.xlabel('False Positive Rate')
 plt.ylabel('True Positive Rate')
 plt.title('Receiver Operating Characteristic (ROC) Curve')
 plt.legend(loc="lower right")
+plt.savefig(r'C:\Users\user\Desktop\BRCA\roc_curve.png')  # save .png
 plt.show()
 
 #Step 8 Validate the model using K-Fold cross-validation
 cv = StratifiedKFold(n_splits=10)
-scores= cross_val_score(RandomForestClassifier(random_state=42), X, y, cv=cv, scroing="accuracy")
+scores= cross_val_score(RandomForestClassifier(random_state=42), X, y, cv=cv, scoring="accuracy")
 print(f"Accuracy:{scores.mean():.4f}(+/-{scores.std()*2:.4f})")
 
 #Step 9 Feature importance ranking
-importance = pd.Seeries(data=rf.feature_importances_, index=X_train.columns)
+importance = pd.Series(data=rf.feature_importances_, index=X_train.columns)
 importance = importance.sort_values(ascending=False)
 print(importance)
 
 #Step 10 Export the trained model
-dump(rf, 'random_forest_model.joblib')
+dump(rf, r'C:\Users\user\Desktop\BRCA\random_forest_model.joblib')
