@@ -2,6 +2,8 @@ import feyn
 import numpy as np
 import pandas as pd
 import sklearn.model_selection
+from sklearn.decomposition import PCA
+import plotly.express as px
 
 #Load the dataset
 data = r"C:\Users\user\Desktop\BRCA\data.csv"
@@ -41,9 +43,6 @@ lr.plot_roc_curve(test, label="Logistic Regression")
 
 #The Multi-Omics Capabilities of the QLattice
 def feature_correlations_map(train, target, correlation='pearson', scale_features=True, abs_values = False):
-
-    from sklearn.decomposition import PCA
-    import plotly.express as px
     
     target_abs = f"{target}_abs"
 
