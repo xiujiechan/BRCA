@@ -15,12 +15,89 @@ BRCA.py
 random_forest_model_training.py
     專注於隨機森林模型的訓練和評估，包括 ROC 曲線和 AUC 的計算，以及 K 折交叉驗證。
     ·更詳細的特徵重要性分析。
+        rs_KIAA0408    0.010571 (這個特徵對模型的重要性相對較高) 
+        rs_MMRN1       0.010038
+        rs_ADIPOQ      0.005953
+        rs_SLC19A3     0.005876
+        rs_KCNIP2      0.005841
+                ...
+        cn_AMZ1        0.000000 (這個特徵對模型的預測沒貢獻)
+        cn_FRMD1       0.000000 (同上)
+        cn_SYT5        0.000000 (同上)
+        cn_SIRPG       0.000000 (同上)
+        cn_SLC1A2      0.000000 (同上)
+        Length: 1936, dtype: float64
     ·使用 K 折交叉驗證來驗證模型穩定性。
     ·繪製 ROC 曲線來評估模型的分類性能。Accuracy:0.8809(+/-0.0563)
 
-詳細說明：
+multi_omics_data_analysis.py
+    1.數據加載
+    2.專注於研究 MYH11 基因與患者生存率之間的關係，提取包含 MYH11 的列。
+    3.進行 T 檢驗以比較死亡和存活患者中 MYH11 基因表達的均值，並檢查其顯著性。
+    4.使用線性回歸模型計算 MYH11 基因拷貝數對生存率的影響、MYH11 基因表達（RNAseq）對生存率的影響，
+        並控制 MYH11 基因拷貝數對 RNAseq 的影響。
+    5.使用多組學數據進行聚類分析，包括 Pearson 相關性分析和 KMeans 聚類。
+    6.計算拷貝數據和 RNAseq 數據之間的 Pearson 相關性係數，並繪製熱圖。
+    7.將數據標準化以適用於 PCA 和 KMeans 聚類。
+    8.使用主成分分析（PCA）降維，並使用 KMeans 進行聚類分析，將數據分為 4 個集群。
+    9.將降維後的數據和聚類結果進行可視化，並根據生存狀況和癌症類型進行標記。
+    10.計算每個集群內的生存比例和癌症類型比例，並繪製柱狀圖以進行可視化。
+    11.核對結果的解釋
+    rs_MYH11：
+    Mean in Dead: 9.719396744663364
+    Mean in Alive: 10.716626617816441
+    T-statistic: -3.8327667389375693
+    P-value: 0.00013806225200052157 這表示 rs_MYH11 在患者生存中具有顯著差異，因為 p 值小於 0.05。
+    cn_MYH11：
+    Mean in Dead: 0.4844517184942717
+    Mean in Alive: 0.6702127659574468
+    T-statistic: -2.364841226624299
+    P-value: 0.018308480088894498 這表示 cn_MYH11 在患者生存中也具有顯著差異。
+    mu_MYH11 和 pp_MYH11：
+    這兩者在患者生存中不顯著，因為 p 值分別為 0.7791174742184606 和 0.8297523928463829，均大於 0.05。
+    效應分析：
+    otal Effect of CN on Status: 0.04248667935678614
+    Direct Effect of CN on Status: 0.04014274503164381
+    Mediated Effect of CN by RNAseq on Status: 0.0023439343251423356
+    這些結果顯示 CN 對生存的總效應為 0.04248667935678614，
+    而 RNAseq 的介導效應則為 0.0023439343251423356。總的來看，這些結果展示了 MYH11 基因在生存中的作用。
+
+feyn_model_training_analysis.py
+    1.數據加載
+    2.使用 feyn 模組進行模型訓練和評估
+    [INFO: feyn._svgrenderer] - Epoch no. 1/25 - Tried 454 models - Elapsed: 2s of 51s. (est.)
+    [INFO: feyn._svgrenderer] - Epoch no. 2/25 - Tried 1127 models - Elapsed: 3s of 39s. (est.)
+    [INFO: feyn._svgrenderer] - Epoch no. 3/25 - Tried 1789 models - Elapsed: 4s of 38s. (est.)
+    [INFO: feyn._svgrenderer] - Epoch no. 4/25 - Tried 2445 models - Elapsed: 5s of 38s. (est.)
+    [INFO: feyn._svgrenderer] - Epoch no. 5/25 - Tried 3110 models - Elapsed: 7s of 37s. (est.)
+    [INFO: feyn._svgrenderer] - Epoch no. 6/25 - Tried 3774 models - Elapsed: 8s of 38s. (est.)
+    [INFO: feyn._svgrenderer] - Epoch no. 7/25 - Tried 4405 models - Elapsed: 10s of 38s. (est.)
+    [INFO: feyn._svgrenderer] - Epoch no. 8/25 - Tried 5017 models - Elapsed: 11s of 38s. (est.)
+    [INFO: feyn._svgrenderer] - Epoch no. 9/25 - Tried 5675 models - Elapsed: 13s of 38s. (est.)
+    [INFO: feyn._svgrenderer] - Epoch no. 10/25 - Tried 6324 models - Elapsed: 15s of 39s. (est.)
+    [INFO: feyn._svgrenderer] - Epoch no. 11/25 - Tried 6956 models - Elapsed: 16s of 39s. (est.)
+    [INFO: feyn._svgrenderer] - Epoch no. 12/25 - Tried 7597 models - Elapsed: 18s of 39s. (est.)
+    [INFO: feyn._svgrenderer] - Epoch no. 13/25 - Tried 8243 models - Elapsed: 20s of 39s. (est.)
+    [INFO: feyn._svgrenderer] - Epoch no. 14/25 - Tried 8879 models - Elapsed: 22s of 41s. (est.)
+    [INFO: feyn._svgrenderer] - Epoch no. 15/25 - Tried 9503 models - Elapsed: 24s of 41s. (est.)
+    [INFO: feyn._svgrenderer] - Epoch no. 16/25 - Tried 10189 models - Elapsed: 26s of 41s. (est.)
+    [INFO: feyn._svgrenderer] - Epoch no. 17/25 - Tried 10829 models - Elapsed: 27s of 41s. (est.)
+    [INFO: feyn._svgrenderer] - Epoch no. 18/25 - Tried 11469 models - Elapsed: 29s of 41s. (est.)
+    [INFO: feyn._svgrenderer] - Epoch no. 19/25 - Tried 12124 models - Elapsed: 31s of 42s. (est.)
+    [INFO: feyn._svgrenderer] - Epoch no. 20/25 - Tried 12789 models - Elapsed: 33s of 42s. (est.)
+    [INFO: feyn._svgrenderer] - Epoch no. 21/25 - Tried 13453 models - Elapsed: 35s of 43s. (est.)
+    [INFO: feyn._svgrenderer] - Epoch no. 22/25 - Tried 14102 models - Elapsed: 37s of 43s. (est.)
+    [INFO: feyn._svgrenderer] - Epoch no. 23/25 - Tried 14761 models - Elapsed: 39s of 43s. (est.)
+    [INFO: feyn._svgrenderer] - Epoch no. 24/25 - Tried 15413 models - Elapsed: 41s of 43s. (est.)
+    [INFO: feyn._svgrenderer] - Epoch no. 25/25 - Tried 16043 models - Completed in 42s.
+
+M_app.py
+
+流程說明：
+
 
 1.數據處理
+
     (1)加載與預處理：
         ·讀取數據文件 brca_data_w_subtypes.csv。
         ·加載並清理數據，處理缺失值。
@@ -37,14 +114,11 @@ random_forest_model_training.py
 
 2.單基因研究：
 
-    使用 t-檢驗檢查 MYH11 基因表達與存活狀態之間的差異。
-
-    使用線性回歸分析 MYH11 基因的拷貝數（CN）對存活狀態和 RNASeq 的影響，並控制 RNASeq 對存活狀態的影響。
+    (1)使用 t-檢驗檢查 MYH11 基因表達與存活狀態之間的差異。
+    (2)使用線性回歸分析 MYH11 基因的拷貝數（CN）對存活狀態和 RNASeq 的影響，並控制 RNASeq 對存活狀態的影響。
 
 3.多組學數據的聚類分析：
 
-    計算拷貝數（CN）和 RNASeq 數據之間的 Pearson 相關係數矩陣。
-
-    使用 PCA 降維，並進行 KMeans 聚類分析。
-
-    繪製聚類結果和存活率分佈，以及不同癌症類型在聚類中的分佈。
+    (1)計算拷貝數（CN）和 RNASeq 數據之間的 Pearson 相關係數矩陣。
+    (2)使用 PCA 降維，並進行 KMeans 聚類分析。
+    (3)繪製聚類結果和存活率分佈，以及不同癌症類型在聚類中的分佈。

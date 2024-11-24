@@ -6,14 +6,17 @@ from scipy.stats import ttest_ind
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
 
-for dirname, _, filenames in os.walk('/kaggle/input'):
+
+for dirname, _, filenames in os.walk(r'C:\Users\user\Desktop\BRCA'):
     for filename in filenames:
         print(os.path.join(dirname, filename))
 
 #Section 1:Data Exploration
 # Open the dataset
-df = pd.read_csv(r"C:\Users\user\Desktop\archive\brca_data_w_subtypes.csv")
+df = pd.read_csv(r"C:\Users\user\Desktop\BRCA\brca_data_w_subtypes.csv")
 
 # View the first 5 rows
 print(df.head())
@@ -115,10 +118,10 @@ plt.ylabel("Principal Component 2")
 # Show the plot
 plt.show()
 
-from sklearn.cluster import KMeans
-# Standardize the data
-from sklearn.preprocessing import StandardScaler
+# Save .png
+plt.savefig(r'C:\Users\user\Desktop\BRCA\pairwise_correlations.png')
 
+# Standardize the data
 scaler = StandardScaler()
 standardized_data = scaler.fit_transform(df.drop(columns=outcomes.columns))
 # Check if standardized_data is correctly standardized
@@ -138,20 +141,20 @@ cluster_assignments = kmeans.fit_predict(standardized_data)
 colors = []
 for ii in range(n_clusters):
     colors = [f"#{np.random.randint(0, 0xFFFFFF):06x}" for _ in range(n_clusters)]
-
     #colors.append("#{:06x}".format(np.random.randint(0, 0xFFFFFF)))
-
 
 # Plot the reduced data with cluster colors
 plt.figure(figsize=(10, 10))
 for cluster in range(n_clusters):
     cluster_points = reduced_data[cluster_assignments == cluster]
+    print(f"Cluster {cluster} points: {cluster_points}")
     plt.scatter(cluster_points[:, 0], cluster_points[:, 1], s=50, label=f"Cluster {cluster + 1}",color=colors[cluster])
 
 # Customize plot appearance
 plt.title("PCA of Combined Copy Number and RNA-seq Data with KMeans Clustering")
 plt.xlabel("Principal Component 1")
 plt.ylabel("Principal Component 2")
+plt.savefig(r'C:\Users\user\Desktop\BRCA\pca_kmeans_clustering_survival.png') # Save .png
 plt.legend()
 
 # Show the plot
@@ -178,6 +181,7 @@ for cluster in range(n_clusters):
 plt.title("PCA of Combined Copy Number and RNA-seq Data with KMeans Clustering")
 plt.xlabel("Principal Component 1")
 plt.ylabel("Principal Component 2")
+plt.savefig(r'C:\Users\user\Desktop\BRCA\pca_kmeans_clustering_survival.png') 
 plt.legend()
 
 # Show the plot
@@ -203,8 +207,10 @@ plt.title('Proportion of survived members in each cluster')
 # add labels to the x and y axes
 plt.xlabel('X-axis label')
 plt.ylabel('Y-axis label')
+plt.ylim(0, 1) #Setting Y-Axis Range
 # display the plot
 plt.show()
+plt.savefig(r'C:\Users\user\Desktop\BRCA\cluster_survival_proportion.png')
 
 # Let's overlay cancer type on top of these clusters?
 cancer_types_desc = ["infiltrating ductal carcinoma","infiltrating lobular carcinoma"]
@@ -227,6 +233,7 @@ for cluster in range(n_clusters):
 plt.title("PCA of Combined Copy Number and RNA-seq Data with KMeans Clustering")
 plt.xlabel("Principal Component 1")
 plt.ylabel("Principal Component 2")
+plt.savefig(r'C:\Users\user\Desktop\BRCA\pca_kmeans_clustering_cancer_type.png')
 plt.legend()
 
 # Show the plot
@@ -256,3 +263,17 @@ plt.ylabel('Y-axis label')
 
 # display the plot
 plt.show()
+
+# save .png
+plt.savefig(r'C:\Users\user\Desktop\BRCA\cluster_cancer_proportion.png')  
+
+print("Reduced data:")
+print(reduced_data)
+print("Cluster assignments:")
+print(cluster_assignments)
+print("Cancer data:")
+print(cancer)          #癌症數據全都屬於浸潤性乳腺癌 一種類型的癌症造成畫面空白
+print("Survived data:")
+print(survived)
+
+

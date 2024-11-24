@@ -4,7 +4,7 @@ import pandas as pd
 import sklearn.model_selection
 
 #Load the dataset
-data = r"C:\Users\user\Desktop\archive\data.csv"
+data = r"C:\Users\user\Desktop\BRCA\data.csv"
 df = pd.read_csv(data)
 df.iloc[:,1400:1500]
 
@@ -86,7 +86,7 @@ def feature_correlations_map(train, target, correlation='pearson', scale_feature
 
     fig.show()
 
-    multi_model = feyn.Model.load(r"C:\Users\user\Desktop\archive\model1_200its_mc7.model")
+    multi_model = feyn.Model.load(r"C:\Users\user\Desktop\BRCA\model1_200its_mc7.model")
     print("Model Loaded:",multi_model)
     multi_model.plot(train, test)
     multi_model.plot_response_2d(df, fixed = {"mu_TNXB" : 0, "cn_ANKRD30B" : -1})
