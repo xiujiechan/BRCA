@@ -3,7 +3,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split, StratifiedKFold, cross_val_score
 import matplotlib.pyplot as plt
 from sklearn.metrics import roc_curve, roc_auc_score
-from joblib import dump 
+from joblib import dump
+from datetime import datetime 
 
 #step 1 Load data
 data_path = 'data.csv'
@@ -52,3 +53,4 @@ print(importance)
 
 #Step 10 Export the trained model
 dump(rf, r'C:\Users\user\Desktop\BRCA\random_forest_model.joblib')
+date_str = datetime.now().strftime("%Y%m%d_%H%M%S")

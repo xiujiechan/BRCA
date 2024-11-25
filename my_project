@@ -61,6 +61,7 @@ multi_omics_data_analysis.py
     Mediated Effect of CN by RNAseq on Status: 0.0023439343251423356
     這些結果顯示 CN 對生存的總效應為 0.04248667935678614，
     而 RNAseq 的介導效應則為 0.0023439343251423356。總的來看，這些結果展示了 MYH11 基因在生存中的作用。
+    *癌症數據全部屬於浸潤性乳腺癌，單一數據無從比較而畫出空白
 
 feyn_model_training_analysis.py
     1.數據加載
