@@ -118,7 +118,7 @@ M_app.py
     (1)使用 t-檢驗檢查 MYH11 基因表達與存活狀態之間的差異。
     (2)使用線性回歸分析 MYH11 基因的拷貝數（CN）對存活狀態和 RNASeq 的影響，並控制 RNASeq 對存活狀態的影響。
 
-3.多組學數據的聚類分析：
+3.多體學數據(Multimodal Data)的聚類分析(Clustering Analysis)：
 
     (1)計算拷貝數（CN）和 RNASeq 數據之間的 Pearson 相關係數矩陣。
     (2)使用 PCA 降維，並進行 KMeans 聚類分析。
