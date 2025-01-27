@@ -14,13 +14,13 @@ import pickle
 import json
 
 # List all files in the directory
-directory_path = r'C:\Users\user\Desktop\BRCA'
+directory_path = r'D:\BRCA'
 files = os.listdir(directory_path)
 print(files)
 
 # Step 1: Data Loading and Preprocessing
 # Load the dataset
-data = pd.read_csv(r'C:\Users\user\Desktop\BRCA\data.csv')
+data = pd.read_csv(r'D:\BRCA\data.csv')
 # Handle missing values (drop rows with missing values)
 data = data.dropna()
 
@@ -57,7 +57,7 @@ def evaluate_model(model, X_test, y_test, plot_filename):
 rf = RandomForestClassifier(n_estimators=100, random_state=42)
 rf.fit(X_train, y_train)
 print("Random Forest:")
-rf_accuracy = evaluate_model(rf, X_test, y_test, r'C:\Users\user\Desktop\BRCA\rf_confusion_matrix.png')
+rf_accuracy = evaluate_model(rf, X_test, y_test, r'D:\BRCA\static\rf_confusion_matrix.png')
 
 # Random Forest Accuracy Plot
 plt.figure(figsize=(6, 6))
@@ -85,7 +85,7 @@ plt.title('Random Forest Accuracy', fontsize=14)
 plt.show()
 
 # Save Random Forest model
-with open(r'C:\Users\user\Desktop\BRCA\rf_model.pkl', 'wb') as f: 
+with open(r'D:\BRCA\rf_model.pkl', 'wb') as f: 
     pickle.dump(rf, f) 
     print("Random Forest Model Saved")
 
@@ -93,7 +93,7 @@ with open(r'C:\Users\user\Desktop\BRCA\rf_model.pkl', 'wb') as f:
 nn = MLPClassifier(hidden_layer_sizes=(100,), max_iter=500, random_state=42)
 nn.fit(X_train, y_train)
 print("Neural Network:")
-nn_accuracy = evaluate_model(nn, X_test, y_test, r'C:\Users\user\Desktop\BRCA\nn_confusion_matrix.png')
+nn_accuracy = evaluate_model(nn, X_test, y_test, r'D:\BRCA\static\nn_confusion_matrix.png')
 
 # Neural Network Accuracy Bar Plot
 plt.figure(figsize=(6, 6))
@@ -120,7 +120,7 @@ plt.title('Neural Network Accuracy', fontsize=14)
 plt.show()
 
 # Save Neural Network model
-with open(r'C:\Users\user\Desktop\BRCA\nn_model.pkl', 'wb') as f:
+with open(r'D:\BRCA\nn_model.pkl', 'wb') as f:
     pickle.dump(nn, f) 
     print("Neural Network Model Saved")
 
@@ -128,7 +128,7 @@ with open(r'C:\Users\user\Desktop\BRCA\nn_model.pkl', 'wb') as f:
 svm = SVC(kernel='linear', probability=True)
 svm.fit(X_train, y_train)
 print("Support Vector Machine (SVM):")
-svm_accuracy = evaluate_model(svm, X_test, y_test, r'C:\Users\user\Desktop\BRCA\svm_confusion_matrix.png')
+svm_accuracy = evaluate_model(svm, X_test, y_test, r'D:\BRCA\static\svm_confusion_matrix.png')
 
 
 # SVM Accuracy Bar Plot
@@ -146,7 +146,7 @@ plt.xlabel('Model')
 plt.show()
 
 #Save SVM model
-with open(r'C:\Users\user\Desktop\BRCA\svm_model.pkl', 'wb') as f: 
+with open(r'D:\BRCA\svm_model.pkl', 'wb') as f: 
     pickle.dump(svm, f) 
     print("SVM Model Saved")
 
@@ -155,7 +155,7 @@ with open(r'C:\Users\user\Desktop\BRCA\svm_model.pkl', 'wb') as f:
 gb = GradientBoostingClassifier(n_estimators=100, random_state=42)
 gb.fit(X_train, y_train)
 print("Gradient Boosting:")
-gb_accuracy = evaluate_model(gb, X_test, y_test, r'C:\Users\user\Desktop\BRCA\gb_confusion_matrix.png') 
+gb_accuracy = evaluate_model(gb, X_test, y_test, r'D:\BRCA\static\gb_confusion_matrix.png') 
 
 
 # Plotting the Gradient Boosting accuracy
@@ -172,7 +172,7 @@ plt.xlabel('Model', fontsize=14)
 plt.show()
 
 #Save Gradient Boosting model
-with open(r'C:\Users\user\Desktop\BRCA\gb_model.pkl', 'wb') as f: 
+with open(r'D:\BRCA\gb_model.pkl', 'wb') as f: 
     pickle.dump(gb, f) 
     print("Gradient Boosting Model Saved")
 
@@ -192,7 +192,7 @@ for index, value in enumerate(accuracies):
 plt.title('Model Accuracy Comparison')
 plt.ylabel('Accuracy')
 plt.xlabel('Model')
-plt.savefig(r'C:\Users\user\Desktop\BRCA\model_accuracy_comparison.png') # Save.png
+plt.savefig(r'D:\BRCA\static\model_accuracy_comparison.png') # Save.png
 plt.show()
 
 # Identifying the Best Performing Model
@@ -203,6 +203,25 @@ best_model_accuracy = accuracies[best_model_index]
 print(f'The best performing model is {best_model_name} with an accuracy of {best_model_accuracy}.')
 
 # Additional metrics and visualizations
+from sklearn.model_selection import GridSearchCV
+
+# Hyperparameter tuning for Random Forest
+param_grid = {
+    'n_estimators': [100, 200, 300],
+    'max_features': ['auto', 'sqrt', 'log2'],
+    'max_depth': [4, 5, 6, 7, 8],
+    'criterion': ['gini', 'entropy']
+}
+
+# Instantiate GridSearchCV
+grid_search = GridSearchCV(estimator=rf, param_grid=param_grid, cv=5, scoring='roc_auc')
+
+# Fit to the data
+grid_search.fit(X_train, y_train)
+
+# Update the rf model to the best found model
+rf = grid_search.best_estimator_
+
 def plot_roc_curve(model, X_test, y_test):
     y_pred_prob = model.predict_proba(X_test)[:, 1]
     fpr, tpr, _ = roc_curve(y_test, y_pred_prob)
@@ -226,3 +245,7 @@ plot_roc_curve(svm, X_test, y_test)
 
 print("Gradient Boosting ROC Curve:")
 plot_roc_curve(gb, X_test, y_test)
+
+print(f"Best parameters for Random Forest: {grid_search.best_params_}")
+print(f"Best AUC for Random Forest: {grid_search.best_score_:.2f}")
+
